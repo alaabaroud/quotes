@@ -1,15 +1,28 @@
 package quotes;
 
+import java.util.ArrayList;
+
 public class Quotes {
+    private ArrayList<String> tags;
     private  String author;
     private  String likes;
     private  String text;
 
-    public Quotes(String author, String likes , String text) {
+    public Quotes(ArrayList<String> tags , String author, String likes , String text) {
+        this.tags = tags;
         this.author = author;
-        this.author = likes;
-        this.author = text;
+        this.likes = likes;
+        this.text = text;
 
+    }
+
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public String getAuthor() {
@@ -36,9 +49,12 @@ public class Quotes {
         this.text = text;
     }
 
+
+
     @Override
     public String toString() {
         return "Quotes{" +
+                "tags=" +tags+
                 "author='" + author + '\'' +
                 ", likes='" + likes + '\'' +
                 ", text='" + text + '\'' +

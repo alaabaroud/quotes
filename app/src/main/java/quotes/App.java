@@ -9,26 +9,45 @@ import com.google.gson.Gson;
 
 import java.io.FileReader;
 import java.io.*;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.ArrayList;
 
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-       Reader reader = new FileReader("recentquotes.json");
+    public static void main(String[] args) {
+String fileName= "recentquotes.json";
+        try {
+            FileReader File = new FileReader(fileName);
+            ArrayList<Quotes> data = jasonFileReader(File);
+            int random = (int) (Math.random() * (data.size()));
+            System.out.println(data.get(random).toString());
+        } catch (FileNotFoundException err) {
+            err.printStackTrace();
+        }
+    }
+    public  static  ArrayList<Quotes> jasonFileReader( FileReader File){
+        Gson g =new  Gson();
+        BufferedReader reader= new BufferedReader(File);
+        ArrayList<Quotes> q= g.fromJson(reader,new TypeToken<ArrayList<Quotes>>() {}.getType());
 
-        Type quote = new TypeToken<List<Quotes>>(){}.getType();
+try {
+    reader.close();
+}catch (IOException err){
+    err.printStackTrace();
+}
 
-        List<Quotes> quotes = new Gson().fromJson(reader,quote);
-        int randomQuotes = (int)(Math.random() * (quotes.size()));
-        System.out.println(quotes.get(randomQuotes));
-        System.out.println("Author : " + quotes.get(randomQuotes).getAuthor());
-        System.out.println("Quote : " + quotes.get(randomQuotes).getText());
-
-
-
+return q;
+//        List<Quotes> quotes = new Gson().fromJson(reader, quote);
+//        int randomQuotes = (int) (Math.random() * (quotes.size()));
+//        System.out.println(quotes.get(randomQuotes));
+//        System.out.println("Author : " + quotes.get(randomQuotes).getAuthor());
+//        System.out.println("Quote : " + quotes.get(randomQuotes).getText());
     }
 }
+
+
+
+
+
