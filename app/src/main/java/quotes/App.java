@@ -3,51 +3,76 @@
  */
 package quotes;
 
-
-import com.google.gson.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.FileReader;
 import java.io.*;
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
-    public static void main(String[] args) {
-String fileName= "recentquotes.json";
-        try {
-            FileReader File = new FileReader(fileName);
-            ArrayList<Quotes> data = jasonFileReader(File);
-            int random = (int) (Math.random() * (data.size()));
-            System.out.println(data.get(random).toString());
-        } catch (FileNotFoundException err) {
-            err.printStackTrace();
-        }
-    }
-    public  static  ArrayList<Quotes> jasonFileReader( FileReader File){
-        Gson g =new  Gson();
-        BufferedReader reader= new BufferedReader(File);
-        ArrayList<Quotes> q= g.fromJson(reader,new TypeToken<ArrayList<Quotes>>() {}.getType());
+//    public String getGreeting() {
+//        return "Hello World!";
+//    }
+public static void main(String[] args) {
 
-try {
-    reader.close();
-}catch (IOException err){
-    err.printStackTrace();
+
+    try {
+        URL url = new URL("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+       HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+connection.setRequestMethod("GET");
+
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+       InputStream  inputStream= connection.getInputStream();
+       InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader in = new BufferedReader(inputStreamReader);
+String line = in.readLine();
+while (line!= null){
+    System.out.println(line);
+    line = in.readLine();
+}
+in.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+
+
+        
+
+    }
+    HttpURLConnection connection;
+
 }
 
-return q;
-//        List<Quotes> quotes = new Gson().fromJson(reader, quote);
-//        int randomQuotes = (int) (Math.random() * (quotes.size()));
-//        System.out.println(quotes.get(randomQuotes));
-//        System.out.println("Author : " + quotes.get(randomQuotes).getAuthor());
-//        System.out.println("Quote : " + quotes.get(randomQuotes).getText());
-    }
+
+
+
+//        Gson gson = new Gson();
+//        FileReader fileReader = null;
+//
+//        try {
+//            fileReader = new FileReader(path);
+//        }catch (FileNotFoundException e){
+//            e.printStackTrace();
+//            System.out.println("theres an error");
+//        }
+//        Type type = new TypeToken<List<Quotes>>(){}.getType();
+//        List <Quotes> allTheQuates =  gson.fromJson(fileReader, type);
+//        int randomQuotes = (int)(Math.random() * (allTheQuates.size()));
+//        System.out.println(allTheQuates.get(randomQuotes).toString());
+//        return allTheQuates;
+//    }
+//
+//
+//
+//    public static void main(String[] args) {
+//        String path = "app/src/main/resources/recentquotes.json";
+////        System.out.println(path);
+//        getQuotes(path);
+//    }
+//    }
 }
-
-
-
-
-
