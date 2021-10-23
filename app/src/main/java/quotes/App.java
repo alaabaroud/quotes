@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import java.io.FileReader;
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class App {
@@ -17,17 +19,22 @@ public class App {
         return "Hello World!";
     }
 
-    public static List<Quotes> getQuotes(String path){
+    public static List getQuotes(String path){
+        Gson gson = new Gson();
         FileReader fileReader = null;
-
         try {
-
+            fileReader = new FileReader(path);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
             System.out.println("theres an error");
         }
         Type type = new TypeToken<List<Quotes>>(){}.getType();
         List <Quotes> allTheQuates =  gson.fromJson(fileReader, type);
         int randomQuotes = (int)(Math.random() * (allTheQuates.size()));
-        System.out.println(allTheQuates.get(randomQuotes).getAuthor() + "\n" + allTheQuates.get(randomQuotes).getText());
+
+        System.out.println("Author name: "+ allTheQuates.get(randomQuotes).getAuthor() + "\n" + "quote: " + allTheQuates.get(randomQuotes).getText()
+                + "\n" + "Likes: "+ allTheQuates.get(randomQuotes).getLikes());
+
         return allTheQuates;
     }
 
@@ -38,6 +45,4 @@ public class App {
         String path = "app/src/main/resources/recentquotes.json";
         getQuotes(path);
     }
-}      fileReader = new FileReader(path);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();      Gson gson = new Gson();
+}
